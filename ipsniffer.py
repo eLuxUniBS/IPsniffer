@@ -57,6 +57,11 @@ class IPsniffer:
         """
         self.p.terminate()
 
+    def restart(self):
+        """Restart the background process launching kill() and start() in a row"""
+        self.kill()
+        self.start()
+
     def save_pcap_in_interval(self, pcap_path, minutes):
         """
 
