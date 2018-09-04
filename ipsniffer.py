@@ -77,3 +77,17 @@ class IPsniffer:
                 wrpcap(pcap_path, self.buffer.get_nowait())
             except Exception as e:
                 pass
+
+    def send(self, pkt):
+        """
+        Send a packet at layer 3
+        :param pkt: the packet to be sent
+        :return: Nothing
+        """
+        send(pkt)
+
+    def read_pcap(self, pcap_file):
+        """ Read packets from a .pcap file and put them in the IPsniffer buffer as they were sniffed from the network"""
+        packets = rdpcap(pcap_file)
+        for pkt in packets:
+            self.buffer.put(pkt)
