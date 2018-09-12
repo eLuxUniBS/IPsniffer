@@ -49,7 +49,7 @@ class IPsniffer:
         print "starting IP sniffer... ",
         if self.p.exitcode is not None:
             self.p = self._set_process()
-            self.p.start()
+        self.p.start()
         print "started!"
 
     def kill(self):
