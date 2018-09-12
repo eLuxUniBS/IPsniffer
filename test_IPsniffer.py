@@ -26,9 +26,17 @@ def test_restart():
 
 def test_write_pcap():
     snffer = IPsniffer("test", iface=iface, filter="")
-    min=0.1
+    min = 0.1
     snffer.start()
-    tstart=dt.datetime.now()
-    snffer.save_pcap_in_interval("test.pcap",min)
+    tstart = dt.datetime.now()
+    snffer.save_pcap_in_interval("test.pcap", min)
     tend = dt.datetime.now()
-    assert ((tend-tstart)-dt.timedelta(minutes=min)).total_seconds()<1
+    snffer.kill()
+    assert ((tend - tstart) - dt.timedelta(minutes=min)).total_seconds() < 1
+
+
+def test_offline():
+    sniffer = IPsniffer('test_offline', iface=None, filter=None, offline='/home/paolo/CSCS-TEMP/ns.cap-17-00.pcap')
+    sniffer.start()
+    time.sleep(5)
+    assert sniffer.buffer.qsize() != 0
