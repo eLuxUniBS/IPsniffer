@@ -16,7 +16,7 @@ def test_restart():
     snffer = IPsniffer("test", iface=iface, filter="", count=3)
     snffer.start()
     snffer.kill()
-    time.sleep(2)
+    time.sleep(0.5)
     while not snffer.buffer.empty():
         snffer.buffer.get_nowait()
     snffer.start()
@@ -36,7 +36,22 @@ def test_write_pcap():
 
 
 def test_offline():
-    sniffer = IPsniffer('test_offline', iface=None, filter=None, offline='/home/paolo/CSCS-TEMP/ns.cap-17-00.pcap')
+    sniffer = IPsniffer('test_offline', iface=None, filter=None, offline='/home/paolo/CSCS-TEMP/ns.cap-modbus.pcap')
     sniffer.start()
-    time.sleep(5)
+    time.sleep(1)
+    sniffer.kill()
     assert sniffer.buffer.qsize() != 0
+
+
+def test_getpkt():
+    count = 5
+    sniffer = IPsniffer('test_offline', iface=None, filter='tcp and dst port 502', count=count,offline='/home/paolo/CSCS-TEMP/ns.cap-17-00.pcap',)
+    sniffer.start()
+    # sniffer.kill()
+    sniffer.p.join()
+    ml = list()
+    while sniffer.buffer.qsize() != 0:
+        pkt = sniffer.buffer.get()
+        print pkt.show()
+        ml.append(pkt)
+    assert len(ml) == count
