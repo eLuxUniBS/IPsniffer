@@ -11,7 +11,7 @@ class IPsniffer:
     Implements a network sniffer using the scapy library.
     """
 
-    def __init__(self, name, iface, filter, count=None, offline=None):
+    def __init__(self, name, iface, filter, count=0, offline=None):
         """
         Inits the sniffer
         :param name: is the name assigned to the process
@@ -50,11 +50,11 @@ class IPsniffer:
         Starts the sniffer thread in a new python process.
         :return:
         """
-        print "starting IP sniffer... ",
+        print("starting IP sniffer... ",)
         if self.p.exitcode is not None:
             self.p = self._set_process()
         self.p.start()
-        print "started!"
+        print("started!")
 
     def kill(self):
         """
